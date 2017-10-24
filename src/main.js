@@ -10,14 +10,17 @@ Vue.use(vueRouter);
 
 //1.0.3定义路由规则
 import layout from "./components/layout.vue";
+import goodslist from "./components/goods/goodslist.vue";
 var router = new vueRouter({
     routes: [
-        { name: "default", path: "/", redirect: "/admin" },
+        { name: "default", path: "/", redirect: "/site" },
         {
             name: "layout",
-            path: "/admin",
-            component: layout
-            
+            path: "/site",
+            component: layout,
+            children:[
+              {name : "goodslist",path:"goodslist",component:goodslist}
+            ]
         }
     ]
 });
@@ -30,7 +33,7 @@ var router = new vueRouter({
 import axios from "axios";
 //2.0.2配置基本url
 axios.defaults.baseURL = "http://157.122.54.189:9095";
-Vue.use(axios);
+// Vue.use(axios);
 Vue.prototype.$http = axios;
 
 

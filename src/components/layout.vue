@@ -51,7 +51,7 @@
             </li>
             <li>
               <a target="_blank" href="/admin/index.aspx">
-                问题提交
+                购物商城
               </a>
             </li>
           </ul>
@@ -67,7 +67,11 @@
         </div>
       </div>
     </div>
+    <!-- 2.0 路由的占位符 -->
+  <router-view></router-view>
   </div>
+
+  
 </template>
 
 <script>
@@ -90,10 +94,10 @@
 
 
   export default {
-    name: 'HelloWorld',
+   
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App'
+       
       }
     }
   }
@@ -101,5 +105,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-  
+   @import url('../../static/elementuiCss/index.css');
 </style>
