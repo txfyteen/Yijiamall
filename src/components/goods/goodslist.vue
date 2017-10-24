@@ -47,7 +47,7 @@
                     <!--幻灯片-->
                     <div class="left-705">
                         <div class="banner-img">
-                            <div id="focus-box" class="focus-box " >
+                            <div id="focus-box" class="focus-box ">
                                 <!-- 利用elementUI的走马灯组件进行替换 -->
 
                                 <el-carousel :interval="5000" arrow="always">
@@ -83,6 +83,49 @@
             </div>
         </div>
 
+        <!-- 分类商品列表 -->
+        <div class="section" v-for="(item,index) in catelist" :key="index">
+
+            <!--子类-->
+            <div class="main-tit">
+                <h2 v-text="item.catetitle"></h2>
+                <p>
+                    <a href="/goods/43.html" v-for="(level2catelist,index) in item.level2catelist" :key="index" v-text="level2catelist.subcatetitle">手机通讯</a>
+
+                    <a href="/goods/40.html">更多
+                        <i>+</i>
+                    </a>
+                </p>
+            </div>
+            <!--/子类-->
+            <div class="wrapper clearfix">
+                <div class="wrap-box">
+                    <ul class="img-list">
+
+                        <li v-for="datas in item.datas" :key="datas.artID">
+                            <a href="/goods/show-91.html">
+                                <div class="img-box">
+                                    <img :src="datas.img_url">
+                                </div>
+                                <div class="info">
+                                    <h3 v-text="datas.artTitle"></h3>
+                                    <p class="price">
+                                        <b>{{datas.sell_price}}</b>元</p>
+                                    <p>
+                                        <strong>库存 {{datas.stock_quantity}}</strong>
+                                        <span>市场价：
+                                            <s v-text="datas.market_price"></s>
+                                        </span>
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 
@@ -90,13 +133,21 @@
     export default {
         data() {
             return {
-                ginfo: {}
+                ginfo: {},
+                catelist: {}
             }
         },
         created() {
             this.getlist();
+            this.getcatelist();
         },
         methods: {
+            getcatelist() {
+                this.$http("/site/goods/getgoodsgroup").then(res => {
+                    this.catelist = res.data.message;
+                    console.log(this.catelist)
+                })
+            },
             getlist() {
                 this.$http("/site/goods/gettopdata/goods").then(res => {
                     this.ginfo = res.data.message;
@@ -117,7 +168,8 @@
         line-height: 50px;
         margin: 0;
     }
-/* 
+
+    /* 
     .el-carousel__item h3 {
      color: #475669;
      font-size: 18px;
