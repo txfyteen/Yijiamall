@@ -47,7 +47,7 @@ import elementUI from "element-ui";
 //自己的CSS样式
 // import "../statics/theme_rms/index.css";
 // import "../statics/css/base.css";
-// import "../static//site//css/style.css"
+import "../static//site//css/style.css"
 
 Vue.use(elementUI);
 
