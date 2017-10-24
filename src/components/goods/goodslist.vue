@@ -53,7 +53,7 @@
                                 <el-carousel :interval="5000" arrow="always">
                                     <!-- el-carousel-item 代表每一页 -->
                                     <el-carousel-item v-for="(item,index) in ginfo.sliderlist" :key="index">
-                                        <img height="400" :src="item.img_url" alt="">
+                                        <img height="400" :src="item.img_url" alt="" class="lunbotu">
                                         <h3>{{ item.title }}</h3>
                                     </el-carousel-item>
                                 </el-carousel>
@@ -156,7 +156,10 @@
         }
     }
 </script>
-<style scoped>
+<style >
+    .el-carousel{
+        height: 341px !important;
+    }
     .el-carousel__container {
         height: 343px;
     }
