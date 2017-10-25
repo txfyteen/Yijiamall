@@ -11,6 +11,7 @@ Vue.use(vueRouter);
 //1.0.3定义路由规则
 import layout from "./components/layout.vue";
 import goodslist from "./components/goods/goodslist.vue";
+import goodsinfo from "./components/goods/goodsinfo.vue";
 var router = new vueRouter({
     routes: [
         { name: "default", path: "/", redirect: "/site" },
@@ -19,7 +20,8 @@ var router = new vueRouter({
             path: "/site",
             component: layout,
             children:[
-              {name : "goodslist",path:"goodslist",component:goodslist}
+              {name : "goodslist",path:"goodslist",component:goodslist},
+              {name : "goodsinfo",path:"goodsinfo/:goodsid",component:goodsinfo},
             ]
         }
     ]

@@ -53,8 +53,10 @@
                                 <el-carousel :interval="5000" arrow="always">
                                     <!-- el-carousel-item 代表每一页 -->
                                     <el-carousel-item v-for="(item,index) in ginfo.sliderlist" :key="index">
-                                        <img height="400" :src="item.img_url" alt="" class="lunbotu">
-                                        <h3>{{ item.title }}</h3>
+                                        <router-link v-bind="{to:'/site/goodsinfo/'+item.id}">
+                                            <img height="400" :src="item.img_url" alt="" class="lunbotu">
+                                        </router-link>
+                                        <h3 class="carousel-title1">{{ item.title }}</h3>
                                     </el-carousel-item>
                                 </el-carousel>
                             </div>
@@ -67,14 +69,16 @@
                     <div class="left-220">
                         <ul class="side-img-list">
                             <li v-for="(item,index) in ginfo.toplist">
-                                <div class="img-box">
-                                    <label>1</label>
-                                    <img :src="item.img_url">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-98.html">{{item.title}}</a>
-                                    <span>{{item.add_time | datafmt("YYYY-MM-DD hh:mm:ss")}}</span>
-                                </div>
+                                <router-link v-bind="{to:'/site/goodsinfo/'+item.id}">
+                                    <div class="img-box">
+                                        <label>1</label>
+                                        <img :src="item.img_url">
+                                    </div>
+                                    <div class="txt-box">
+                                        <a href="/goods/show-98.html">{{item.title}}</a>
+                                        <span>{{item.add_time | datafmt("YYYY-MM-DD hh:mm:ss")}}</span>
+                                    </div>
+                                </router-link>
                             </li>
                         </ul>
                     </div>
@@ -105,7 +109,9 @@
                         <li v-for="datas in item.datas" :key="datas.artID">
                             <a href="/goods/show-91.html">
                                 <div class="img-box">
-                                    <img :src="datas.img_url">
+                                    <router-link v-bind="{to:'/site/goodsinfo/'+datas.artID}">
+                                        <img :src="datas.img_url">
+                                    </router-link>
                                 </div>
                                 <div class="info">
                                     <h3 v-text="datas.artTitle"></h3>
@@ -142,6 +148,9 @@
             this.getcatelist();
         },
         methods: {
+            getinfo() {
+
+            },
             getcatelist() {
                 this.$http("/site/goods/getgoodsgroup").then(res => {
                     this.catelist = res.data.message;
@@ -156,10 +165,15 @@
         }
     }
 </script>
-<style >
-    .el-carousel{
+<style>
+    .carousel-title1{
+        background-color:#fff;
+        opacity: .2
+    }
+    .el-carousel {
         height: 341px !important;
     }
+
     .el-carousel__container {
         height: 343px;
     }
