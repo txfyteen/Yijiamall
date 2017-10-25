@@ -46,7 +46,7 @@
                             <tbody>
                                 <tr>
                                     <th width="48" align="center">
-                                        <el-switch v-model="isselectedAll" on-text="反选" off-text="全选" @change="isSelectedAlla"></el-switch>
+                                        <el-switch v-model="isselectedAll" on-color="#1F2D3D" on-text="反选" off-text="全选" @change="isSelectedAlla"></el-switch>
                                     </th>
                                     <th align="left" colspan="2">商品信息</th>
                                     <th width="84" align="left">单价</th>
@@ -70,25 +70,21 @@
                                 </tr>
                                 <tr v-for="(item,index) in goodsList" :key="item.id" class="goodslisttable" >
                                     <td>
-                                        <el-switch v-model="values[index]" on-text="取消" off-text="选择" @change="isSelected">
+                                        <el-switch v-model="values[index]" on-color="#1F2D3D" on-text="取消" off-text="选择" @change="isSelected">
                                         </el-switch>
                                     </td>
                                     <td align="left" colspan="2">{{item.title}}</td>
                                     <td  width="84">{{item.sell_price}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><el-button type="success">删除</el-button></td>
-                                     
-                                    
+                                    <td width="104" align="center">{{item.buycount}}</td>
+                                    <td width="104" align="left">{{item.sell_price*item.buycount}}</td>
+                                    <td width="54" align="center"><el-button type="success">删除</el-button></td>
                                 </tr>
-
-
                                 <tr>
                                     <th align="right" colspan="8">
                                         已选择商品
-                                        <b class="red" id="totalQuantity">0</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
+                                        <b class="red" id="totalQuantity">{{buyGoodsCount}}</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
                                         <span class="red">￥</span>
-                                        <b class="red" id="totalAmount">0</b>元
+                                        <b class="red" id="totalAmount">{{goodsAllPrice}}</b>元
                                     </th>
                                 </tr>
                             </tbody>
@@ -118,6 +114,9 @@
                 goodsList: [],
                 values:[],
                 isselectedAll:false,
+                buyGoodsCount:0,//所有商品总数
+                goodsAllPrice:10000
+                
                 
 
             }
@@ -126,6 +125,9 @@
             this.getList()
         },
         methods: {
+            getPrice(){
+                
+            },
             isSelected(){
                 for(var i=0;i<this.values.length;i++){
                         if(this.values[i]==false){
@@ -158,17 +160,26 @@
                         //根据返回的数组个数初始化values数组的个数
                         this.goodsList.forEach((item,index)=>{
                             this.values.push(false);
-
-                            
                             item.buycount = goodsObj[item.id]
+                            //计算商品总数
+                            this.buyGoodsCount+= item.buycount;
+                            
                         })
+                        
                     })
             }
         }
     }
 </script>
-<style scoped>
+<style >
     .goodslisttable td{
         /* text-align: center; */
+    }
+    .cart-foot .right-box .button{
+        background-color: #13CE66;
+    }
+
+    .cart-foot .right-box .submit{
+        background-color: #FF4949;
     }
 </style>
