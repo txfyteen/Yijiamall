@@ -11,8 +11,13 @@
           <a href="/login.html">登录</a>
           <a href="/register.html">注册</a>
           <strong>|</strong>
-          <!--<a href="/content/contact.html"><i class="iconfont icon-phone"></i>联系我们</a>
-                           <a href="/cart.html"><i class="iconfont icon-cart"></i>购物车(<span id="shoppingCartCount"><script type="text/javascript" src="/tools/submit_ajax.ashx?action=view_cart_count"></script></span>)</a>-->
+          <!-- <a href="/content/contact.html"><i class="iconfont icon-phone"></i>联系我们</a> -->
+            <router-link to="/site/cart">
+                <i class="iconfont icon-cart"></i>购物车(
+                <span id="shoppingCartCount">
+                  {{this.$store.getters.getCount}}
+                </span>)
+          </router-link>
         </div>
       </div>
     </div>
@@ -55,7 +60,6 @@
                   购物商城
                 </a>
               </router-link>
-              
             </li>
           </ul>
         </div>
@@ -71,42 +75,42 @@
       </div>
     </div>
     <!-- 2.0 路由的占位符 -->
-  <router-view></router-view>
+    <router-view></router-view>
   </div>
 
-  
+
 </template>
 
 <script>
-  $(document).ready(function() {
-	$("#menu2 li a").wrapInner( '<span class="out"></span>' );
-	$("#menu2 li a").each(function() {
-		$( '<span class="over">' +  $(this).text() + '</span>' ).appendTo( this );
-	});
+  $(document).ready(function () {
+    $("#menu2 li a").wrapInner('<span class="out"></span>');
+    $("#menu2 li a").each(function () {
+      $('<span class="over">' + $(this).text() + '</span>').appendTo(this);
+    });
 
-	$("#menu2 li a").hover(function() {
-		$(".out",	this).stop().animate({'top':	'48px'},	300); // move down - hide
-		$(".over",	this).stop().animate({'top':	'0px'},		300); // move down - show
+    $("#menu2 li a").hover(function () {
+      $(".out", this).stop().animate({ 'top': '48px' }, 300); // move down - hide
+      $(".over", this).stop().animate({ 'top': '0px' }, 300); // move down - show
 
-	}, function() {
-		$(".out",	this).stop().animate({'top':	'0px'},		300); // move up - show
-		$(".over",	this).stop().animate({'top':	'-48px'},	300); // move up - hide
-	});
+    }, function () {
+      $(".out", this).stop().animate({ 'top': '0px' }, 300); // move up - show
+      $(".over", this).stop().animate({ 'top': '-48px' }, 300); // move up - hide
+    });
 
-});
+  });
 
 
   export default {
-   
+
     data() {
       return {
-       
+
       }
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style >
-   @import url('../../static/elementuiCss/index.css');
+<style>
+  @import url('../../static/elementuiCss/index.css');
 </style>

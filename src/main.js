@@ -12,6 +12,7 @@ Vue.use(vueRouter);
 import layout from "./components/layout.vue";
 import goodslist from "./components/goods/goodslist.vue";
 import goodsinfo from "./components/goods/goodsinfo.vue";
+import cart from "./components/goods/cart.vue";
 var router = new vueRouter({
     routes: [
         { name: "default", path: "/", redirect: "/site" },
@@ -19,9 +20,10 @@ var router = new vueRouter({
             name: "layout",
             path: "/site",
             component: layout,
-            children:[
-              {name : "goodslist",path:"goodslist",component:goodslist},
-              {name : "goodsinfo",path:"goodsinfo/:goodsid",component:goodsinfo},
+            children: [
+                { name: "goodslist", path: "goodslist", component: goodslist },
+                { name: "goodsinfo", path: "goodsinfo/:goodsid", component: goodsinfo },
+                { name: "cart", path: "cart", component: cart },
             ]
         }
     ]
@@ -55,6 +57,67 @@ import elementUI from "element-ui";
 import "../static//site//css/style.css"
 
 Vue.use(elementUI);
+
+
+//4.0 使vuex
+import vuex from "vuex"
+Vue.use(vuex);
+
+// //4.1 生命一个state存储全局状态
+var state = {
+    //购买商品种类的个数
+    buycount: 0,
+}
+
+var actions = {
+    changeBuyCount({ commit }, buycount) {
+        commit('changeBuyCount', buycount);
+    }
+}
+
+var mutations = {
+    changeBuyCount(state, buycount) {
+        state.buycount = buycount;
+    }
+}
+
+import { getItem } from '../static/kits/localstorageKit.js'
+var getters = {
+    // ///site/comment/getshopcargoods/:ids
+    getCount(state) {
+        if (state.buyCount > 0) {
+            return state.buycount;
+        }
+        //读取localstorage中的数据商品种类个数返回
+        var goodsObj = getItem();
+        var count = 0;
+        for (var key in goodsObj){
+            count ++ ;
+        }
+        state.buycount = count;
+        return state.buycount;
+    }
+
+
+
+}
+
+
+//实例化store对象
+var store = new vuex.Store({
+    state,
+    mutations,
+    actions,
+    getters
+})
+
+
+
+
+
+
+
+
 
 //配置公有过滤器
 Vue.filter('datafmt', function (input, fmtstring) {
@@ -99,6 +162,7 @@ Vue.filter('datafmt', function (input, fmtstring) {
 new Vue({
     el: "#app",
     router,
+    store,
     //将App当做根组件替换html里面的div
     render: create => create(App)
 

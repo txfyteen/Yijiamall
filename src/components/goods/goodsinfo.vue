@@ -20,33 +20,33 @@
                         <div class="goods-box clearfix">
                             <!--商品图片-->
                             <div class="pic-box">
-                                    <div class="magnifier" id="magnifier1">
-                                            <div class="magnifier-container">
-                                                <div class="images-cover"></div>
-                                                <!--当前图片显示容器-->
-                                                <div class="move-view"></div>
-                                                <!--跟随鼠标移动的盒子-->
-                                            </div>
-                                            <div class="magnifier-assembly">
-                                                <div class="magnifier-btn">
-                                                    <span class="magnifier-btn-left">&lt;</span>
-                                                    <span class="magnifier-btn-right">&gt;</span>
-                                                </div>
-                                                <!--按钮组-->
-                                                <div class="magnifier-line">
-                                                    <ul class="clearfix animation03">
-                                                        <li v-for="item in imgList" :key="item.id">
-                                                            <div class="small-img">`
-                                                                <img :src="item.original_path" />
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!--缩略图-->
-                                            </div>
-                                            <div class="magnifier-view"></div>
-                                            <!--经过放大的图片显示容器-->
+                                <div class="magnifier" id="magnifier1">
+                                    <div class="magnifier-container">
+                                        <div class="images-cover"></div>
+                                        <!--当前图片显示容器-->
+                                        <div class="move-view"></div>
+                                        <!--跟随鼠标移动的盒子-->
+                                    </div>
+                                    <div class="magnifier-assembly">
+                                        <div class="magnifier-btn">
+                                            <span class="magnifier-btn-left">&lt;</span>
+                                            <span class="magnifier-btn-right">&gt;</span>
                                         </div>
+                                        <!--按钮组-->
+                                        <div class="magnifier-line">
+                                            <ul class="clearfix animation03">
+                                                <li v-for="item in imgList" :key="item.id">
+                                                    <div class="small-img">`
+                                                        <img :src="item.original_path" />
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--缩略图-->
+                                    </div>
+                                    <div class="magnifier-view"></div>
+                                    <!--经过放大的图片显示容器-->
+                                </div>
                             </div>
                             <!--/商品图片-->
 
@@ -78,12 +78,7 @@
                                             <dt>购买数量</dt>
                                             <dd>
                                                 <div class="stock-box">
-                                                    <input id="commodityChannelId" type="hidden" value="2">
-                                                    <input id="commodityArticleId" type="hidden" value="98">
-                                                    <input id="commodityGoodsId" type="hidden" value="0">
-                                                    <input id="commoditySelectNum" type="text" maxlength="9" value="1" maxvalue="10" onkeydown="return checkNumber(event);">
-                                                    <a class="add" onclick="addCartNum(1);">+</a>
-                                                    <a class="remove" onclick="addCartNum(-1);">-</a>
+                                                    <el-input-number v-model="buyCount" :min="1"></el-input-number>
                                                 </div>
                                                 <span class="stock-txt">
                                                     库存
@@ -95,7 +90,7 @@
                                             <dd>
                                                 <div class="btn-buy" id="buyButton">
                                                     <button class="buy" onclick="cartAdd(this,'/',1,'/shopping.html');">立即购买</button>
-                                                    <button class="add" onclick="cartAdd(this,'/',0,'/cart.html');">加入购物车</button>
+                                                    <button class="add" @click="cartAdd(buyCount)">加入购物车</button>
                                                 </div>
                                             </dd>
                                         </dl>
@@ -214,9 +209,9 @@
     import Affix from 'iview/src/components/affix';
     // 导入jquery插件
     import "../../../static/site/js/jqplugins/imgzoom/magnifier.js"
-    $(function () {
-        $('#magnifier1').imgzoon({ magnifier: '#magnifier1' });
-    });
+
+
+    import { setItem } from "../../../static/kits/localstorageKit.js"
 
     export default {
         components: {
@@ -232,19 +227,33 @@
                 pageSize: 5,
                 totalCount: 0,
                 commentList: [],
-                commentTxt: ""
+                commentTxt: "",
+                buyCount: 0//购买数量
             }
         },
         created() {
             this.getInfo();
             this.getComment();
         },
-        watch:{
-            "$route" : function(){
+        watch: {
+            "$route": function () {
                 this.getInfo();
             }
         },
         methods: {
+            cartAdd() {
+                //设置全局状态里面的buycount
+                // this.$store.state.buycount += buycount;
+                this.$store.dispatch("changeBuyCount",this.buyCount);
+                //重新存到state中
+                //{'gid':'88','bcount':'1'}
+
+                // if(this.ginfo.id){
+                //     this.$store.state.ids.push(this.ginfo.id)
+                // }
+                setItem({"gid":this.$route.params.goodsid,"bcount":this.buyCount});
+                // console.log(this.buyCount)
+            },
             postComment() {
                 //提交评论
                 if (this.commentTxt.length <= 0) {
@@ -271,7 +280,6 @@
             },
             pageSizeChange(val) {
                 this.pageSize = val;
-                console.log(val)
                 this.getComment()
 
             },
@@ -296,6 +304,11 @@
                     this.ginfo = res.data.message.goodsinfo;
                     this.imgList = res.data.message.imglist;
                     this.hotgoodslist = res.data.message.hotgoodslist;
+                    setTimeout(function () {
+                        $(function () {
+                            $('#magnifier1').imgzoon({ magnifier: '#magnifier1' });
+                        });
+                    }, 100)
                 })
             }
         }

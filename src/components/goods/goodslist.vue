@@ -186,6 +186,7 @@
         margin: 0;
     }
 
+
     /* 
     .el-carousel__item h3 {
      color: #475669;
