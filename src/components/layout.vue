@@ -11,7 +11,6 @@
           <a href="/login.html">登录</a>
           <a href="/register.html">注册</a>
           <strong>|</strong>
-          <!-- <a href="/content/contact.html"><i class="iconfont icon-phone"></i>联系我们</a> -->
             <router-link to="/site/cart">
                 <i class="iconfont icon-cart"></i>购物车(
                 <span id="shoppingCartCount">

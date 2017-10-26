@@ -247,12 +247,7 @@
                 this.$store.dispatch("changeBuyCount",this.buyCount);
                 //重新存到state中
                 //{'gid':'88','bcount':'1'}
-
-                // if(this.ginfo.id){
-                //     this.$store.state.ids.push(this.ginfo.id)
-                // }
                 setItem({"gid":this.$route.params.goodsid,"bcount":this.buyCount});
-                // console.log(this.buyCount)
             },
             postComment() {
                 //提交评论

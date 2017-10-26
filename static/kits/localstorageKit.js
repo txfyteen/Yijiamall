@@ -37,7 +37,10 @@ export function getItem(){
 //{goodsid:buycount}
 
 //删除方法
-export function removeItem(){
+export function removeItem(goodsid){
+    var goods =  getItem();
 
+    delete goods[goodsid];
 
+    localStorage.setItem(key,JSON.stringify(goods));
 }

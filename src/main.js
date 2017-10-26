@@ -77,7 +77,7 @@ var actions = {
 
 var mutations = {
     changeBuyCount(state, buycount) {
-        state.buycount = buycount;
+        state.buycount += buycount;
     }
 }
 
@@ -85,7 +85,7 @@ import { getItem } from '../static/kits/localstorageKit.js'
 var getters = {
     // ///site/comment/getshopcargoods/:ids
     getCount(state) {
-        if (state.buyCount > 0) {
+        if (state.buycount > 0) {
             return state.buycount;
         }
         //读取localstorage中的数据商品种类个数返回

@@ -80,7 +80,7 @@
                                     </td>
                                     <td width="84" align="left">{{item.sell_price*item.buycount}}</td>
                                     <td width="54" align="center">
-                                        <el-button type="success">删除</el-button>
+                                        <el-button type="success" @click="removeGoods(item.id)">删除</el-button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -111,7 +111,7 @@
 
 <script>
 
-    import { getItem } from "../../../static/kits/localstorageKit.js"
+    import { getItem,removeItem } from "../../../static/kits/localstorageKit.js"
     //引入子组件
     import myinput from "../kitcomp/numComputed.vue"
     export default {
@@ -124,8 +124,6 @@
                 values: [],
                 isselectedAll: false,
                 buyGoodsCount: 0,//所有商品总数
-                
-
             }
         },
         created() {
@@ -155,6 +153,15 @@
             }   
         },
         methods: {
+            removeGoods(id){
+                var index = -1
+                index = this.goodsList.findIndex(item=>{item.id == id})
+
+                this.goodsList.splice(index,1);
+                this.values.splice(index,1)
+                removeItem(id)
+                this.getList();
+            },
             update(obj){
                 this.goodsList.forEach((item,index)=>{
                     if(item.id == obj.gid){
@@ -196,7 +203,6 @@
                 this.$http.get("/site/comment/getshopcargoods/" + ids)
                     .then(res => {
                         this.goodsList = res.data.message
-
                         //根据返回的数组个数初始化values数组的个数
                         this.goodsList.forEach((item, index) => {
                             this.values.push(false);
