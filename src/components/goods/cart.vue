@@ -68,23 +68,27 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr v-for="(item,index) in goodsList" :key="item.id" class="goodslisttable" >
+                                <tr v-for="(item,index) in goodsList" :key="item.id" class="goodslisttable">
                                     <td>
                                         <el-switch v-model="values[index]" on-color="#1F2D3D" on-text="取消" off-text="选择" @change="isSelected">
                                         </el-switch>
                                     </td>
                                     <td align="left" colspan="2">{{item.title}}</td>
-                                    <td  width="84">{{item.sell_price}}</td>
-                                    <td width="104" align="center">{{item.buycount}}</td>
-                                    <td width="104" align="left">{{item.sell_price*item.buycount}}</td>
-                                    <td width="54" align="center"><el-button type="success">删除</el-button></td>
+                                    <td width="84">{{item.sell_price}}</td>
+                                    <td width="120" align="center">
+                                       <myinput @update="update" :options="{gid:item.id,count:item.buycount}"></myinput>
+                                    </td>
+                                    <td width="84" align="left">{{item.sell_price*item.buycount}}</td>
+                                    <td width="54" align="center">
+                                        <el-button type="success">删除</el-button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th align="right" colspan="8">
                                         已选择商品
                                         <b class="red" id="totalQuantity">{{buyGoodsCount}}</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
                                         <span class="red">￥</span>
-                                        <b class="red" id="totalAmount">{{goodsAllPrice}}</b>元
+                                        <b class="red" id="totalAmount">{{getPrice}}</b>元
                                     </th>
                                 </tr>
                             </tbody>
@@ -108,43 +112,79 @@
 <script>
 
     import { getItem } from "../../../static/kits/localstorageKit.js"
+    //引入子组件
+    import myinput from "../kitcomp/numComputed.vue"
     export default {
+        components:{
+            myinput
+        },
         data() {
             return {
                 goodsList: [],
-                values:[],
-                isselectedAll:false,
-                buyGoodsCount:0,//所有商品总数
-                goodsAllPrice:10000
-                
+                values: [],
+                isselectedAll: false,
+                buyGoodsCount: 0,//所有商品总数
                 
 
             }
         },
         created() {
-            this.getList()
+            this.getList();
+
+        },
+        computed: {
+            //计算商品的总数
+            getPrice(){
+                var trueArr = this.values.filter(item=>{
+
+                    return item;
+                    
+                })
+                this.buyGoodsCount = trueArr.length
+
+                var goodsAllPrice = 0
+                //计算商品总价
+                var _this = this
+                this.values.forEach(function(element,index,array){
+                    if(element == true){
+                        var goodsinfo = _this.goodsList[index]
+                        goodsAllPrice+=goodsinfo.sell_price*goodsinfo.buycount
+                    }
+                })
+                return goodsAllPrice
+            }   
         },
         methods: {
-            getPrice(){
-                
-            },
-            isSelected(){
-                for(var i=0;i<this.values.length;i++){
-                        if(this.values[i]==false){
-                                this.isselectedAll = false;
-                        }
+            update(obj){
+                this.goodsList.forEach((item,index)=>{
+                    if(item.id == obj.gid){
+                        item.buycount = obj.count;
                     }
+                }) 
+                this.goodsList.push("");
+                this.goodsList.pop();
+            },
+            isSelected() {
+                for (var i = 0; i < this.values.length; i++) {
+                    if (this.values[i] == false) {
+                        this.isselectedAll = false;
+                    }
+                }
+               
             },
             //全选按钮
-            isSelectedAlla(){
+            isSelectedAlla() {
                 // console.log('isSelectedAlla')
-                    for(var i=0;i<this.values.length;i++){
-                        if(this.isselectedAll==true){
-                                this.values[i] = true;
-                        }else if(this.isselectedAll==false){
-                            this.values[i] = false;
-                        }
+                for (var i = 0; i < this.values.length; i++) {
+                    if (this.isselectedAll == true) {
+                        this.values[i] = true;
+                    } else if (this.isselectedAll == false) {
+                        this.values[i] = false;
                     }
+                }
+                this.values.push("false")
+                this.values.pop();
+
             },
             getList() {
                 var goodsObj = getItem();
@@ -158,28 +198,25 @@
                         this.goodsList = res.data.message
 
                         //根据返回的数组个数初始化values数组的个数
-                        this.goodsList.forEach((item,index)=>{
+                        this.goodsList.forEach((item, index) => {
                             this.values.push(false);
                             item.buycount = goodsObj[item.id]
-                            //计算商品总数
-                            this.buyGoodsCount+= item.buycount;
-                            
                         })
-                        
                     })
             }
         }
     }
 </script>
-<style >
-    .goodslisttable td{
+<style>
+    .goodslisttable td {
         /* text-align: center; */
     }
-    .cart-foot .right-box .button{
+
+    .cart-foot .right-box .button {
         background-color: #13CE66;
     }
 
-    .cart-foot .right-box .submit{
+    .cart-foot .right-box .submit {
         background-color: #FF4949;
     }
 </style>
