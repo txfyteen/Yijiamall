@@ -10,10 +10,11 @@ const key =  "buyGoodsCount"
 
  //设置方法
 export function setItem (goodsinfo){
-    //1 判断localstorage中是否有这个商品的记录
+    //1 传入这个商品对象{'gid':'88','bcount':'1'}
     var goodsObj = getItem();
+    //2 判断localstorage中是否有这个商品的记录
     if(goodsObj[goodsinfo.gid]){
-        //如果有
+        //如果有，新的商品数量 = 商品原数量 + 传入的商品的数量
         goodsObj[goodsinfo.gid] = goodsObj[goodsinfo.gid]+goodsinfo.bcount;
     }else{
         goodsObj[goodsinfo.gid] = goodsinfo.bcount;
@@ -21,6 +22,13 @@ export function setItem (goodsinfo){
     //存储到localStorage
     localStorage.setItem(key,JSON.stringify(goodsObj));
 } 
+
+
+// //设置商品数量的加减
+// export function setItemcom (goodsObj){
+//     var obj = getItem(); // {id:count}
+//     obj[goodsObj.bcount]+
+// }
 
 
 //获取方法
@@ -52,7 +60,6 @@ function getItems(){
     return !arr?[]:arr;
 }
 
-// obj:{gid}
 export function setItemCount(gid){
    
     var arr = getItems();
