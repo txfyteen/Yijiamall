@@ -34,6 +34,7 @@ export function getItem(){
     return obj;
 }
 
+
 //{goodsid:buycount}
 
 //删除方法
@@ -43,4 +44,30 @@ export function removeItem(goodsid){
     delete goods[goodsid];
 
     localStorage.setItem(key,JSON.stringify(goods));
+}
+
+function getItems(){
+    var arrString =  localStorage.getItem('count');
+    var arr = JSON.parse(arrString);
+    return !arr?[]:arr;
+}
+
+// obj:{gid}
+export function setItemCount(gid){
+   
+    var arr = getItems();
+    if(arr.indexOf(gid)==-1){
+        arr.push(gid);
+    }
+
+    localStorage.setItem('count',JSON.stringify(arr));
+}
+
+export function getItemCount(){
+  var arrString =  localStorage.getItem('count');
+  if(!arrString){
+    return 0;
+  }
+
+  return JSON.parse(arrString).length;
 }

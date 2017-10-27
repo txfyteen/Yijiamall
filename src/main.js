@@ -13,6 +13,8 @@ import layout from "./components/layout.vue";
 import goodslist from "./components/goods/goodslist.vue";
 import goodsinfo from "./components/goods/goodsinfo.vue";
 import cart from "./components/goods/cart.vue";
+import shopping from "./components/goods/shopping.vue";
+import login from "./components/goods/login.vue";
 var router = new vueRouter({
     routes: [
         { name: "default", path: "/", redirect: "/site" },
@@ -24,6 +26,8 @@ var router = new vueRouter({
                 { name: "goodslist", path: "goodslist", component: goodslist },
                 { name: "goodsinfo", path: "goodsinfo/:goodsid", component: goodsinfo },
                 { name: "cart", path: "cart", component: cart },
+                {name:'shopping',path:"shopping",component:shopping},
+                {name:'login',path:"login",component:login},
             ]
         }
     ]
@@ -66,7 +70,7 @@ Vue.use(vuex);
 // //4.1 生命一个state存储全局状态
 var state = {
     //购买商品种类的个数
-    buycount: 0,
+    buycount: 0
 }
 
 var actions = {
@@ -81,21 +85,25 @@ var mutations = {
     }
 }
 
-import { getItem } from '../static/kits/localstorageKit.js'
+import { getItem,getItemCount } from '../static/kits/localstorageKit.js'
 var getters = {
     // ///site/comment/getshopcargoods/:ids
     getCount(state) {
-        if (state.buycount > 0) {
-            return state.buycount;
-        }
+        // if (state.buycount > 0) {
+        //     return state.buycount;
+        // }
         //读取localstorage中的数据商品种类个数返回
-        var goodsObj = getItem();
-        var count = 0;
-        for (var key in goodsObj){
-            count ++ ;
-        }
-        state.buycount = count;
+        // var goodsObj = getItem();
+       
+        // for (var key in goodsObj){
+        //     state.tmpcount ++ ;
+        // }
+        // state.buycount = state.tmpcount;
+        state.buycount = getItemCount();
+
+        console.log('===========>',state.buycount);
         return state.buycount;
+        
     }
 
 

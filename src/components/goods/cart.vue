@@ -76,7 +76,7 @@
                                     <td align="left" colspan="2">{{item.title}}</td>
                                     <td width="84">{{item.sell_price}}</td>
                                     <td width="120" align="center">
-                                       <myinput @update="update" :options="{gid:item.id,count:item.buycount}"></myinput>
+                                        <myinput @update="update" :options="{gid:item.id,count:item.buycount}"></myinput>
                                     </td>
                                     <td width="84" align="left">{{item.sell_price*item.buycount}}</td>
                                     <td width="54" align="center">
@@ -99,7 +99,9 @@
                     <div class="cart-foot clearfix">
                         <div class="right-box">
                             <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
-                            <button class="submit" onclick="formSubmit(this, '/', '/shopping.html');">立即结算</button>
+                            <router-link to="/site/shopping">
+                                <button class="submit">立即结算</button>
+                            </router-link>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -111,11 +113,11 @@
 
 <script>
 
-    import { getItem,removeItem } from "../../../static/kits/localstorageKit.js"
+    import { getItem, removeItem } from "../../../static/kits/localstorageKit.js"
     //引入子组件
     import myinput from "../kitcomp/numComputed.vue"
     export default {
-        components:{
+        components: {
             myinput
         },
         data() {
@@ -132,42 +134,44 @@
         },
         computed: {
             //计算商品的总数
-            getPrice(){
-                var trueArr = this.values.filter(item=>{
+            getPrice() {
+                var trueArr = this.values.filter(item => {
 
                     return item;
-                    
+
                 })
                 this.buyGoodsCount = trueArr.length
 
                 var goodsAllPrice = 0
                 //计算商品总价
                 var _this = this
-                this.values.forEach(function(element,index,array){
-                    if(element == true){
+                this.values.forEach(function (element, index, array) {
+                    if (element == true) {
                         var goodsinfo = _this.goodsList[index]
-                        goodsAllPrice+=goodsinfo.sell_price*goodsinfo.buycount
+                        goodsAllPrice += goodsinfo.sell_price * goodsinfo.buycount
                     }
                 })
                 return goodsAllPrice
-            }   
+            }
         },
         methods: {
-            removeGoods(id){
+            removeGoods(id) {
                 var index = -1
-                index = this.goodsList.findIndex(item=>{item.id == id})
+                index = this.goodsList.findIndex(item => { item.id == id })
 
-                this.goodsList.splice(index,1);
-                this.values.splice(index,1)
+                this.goodsList.splice(index, 1);
+                this.values.splice(index, 1)
                 removeItem(id)
                 this.getList();
+
+                this.$store.dispatch("changeBuyCount", -1);
             },
-            update(obj){
-                this.goodsList.forEach((item,index)=>{
-                    if(item.id == obj.gid){
+            update(obj) {
+                this.goodsList.forEach((item, index) => {
+                    if (item.id == obj.gid) {
                         item.buycount = obj.count;
                     }
-                }) 
+                })
                 this.goodsList.push("");
                 this.goodsList.pop();
             },
@@ -177,7 +181,7 @@
                         this.isselectedAll = false;
                     }
                 }
-               
+
             },
             //全选按钮
             isSelectedAlla() {

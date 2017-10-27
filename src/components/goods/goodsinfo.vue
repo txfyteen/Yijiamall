@@ -211,7 +211,7 @@
     import "../../../static/site/js/jqplugins/imgzoom/magnifier.js"
 
 
-    import { setItem } from "../../../static/kits/localstorageKit.js"
+    import { setItem,setItemCount} from "../../../static/kits/localstorageKit.js"
 
     export default {
         components: {
@@ -244,6 +244,7 @@
             cartAdd() {
                 //设置全局状态里面的buycount
                 // this.$store.state.buycount += buycount;
+                setItemCount(this.$route.params.goodsid);
                 this.$store.dispatch("changeBuyCount",this.buyCount);
                 //重新存到state中
                 //{'gid':'88','bcount':'1'}
@@ -303,7 +304,8 @@
                         $(function () {
                             $('#magnifier1').imgzoon({ magnifier: '#magnifier1' });
                         });
-                    }, 100)
+                    }, 100)                 
+                    
                 })
             }
         }
