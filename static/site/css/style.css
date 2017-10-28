@@ -429,7 +429,7 @@ table { border-collapse:collapse; border-spacing:0; }
 .form-box{ margin:10px auto; padding:20px 0 30px; }
     .form-box .form-group{ margin:0; padding:5px 0; clear:both; }
     .form-box .form-group .tips{ margin-left:16%; color:#666; font-size:12px; line-height:20px; }
-    .form-box .form-group dt{ display:block; float:left; padding-right:2%; width:30%; line-height:40px; text-align:right; color:#888; }
+    .form-box .form-group dt{ display:block; float:left; padding-right:2%; width:10%; line-height:40px; text-align:right; color:#888; }
     .form-box .form-group dd{ display:block; position:relative; margin-left:16%; line-height:40px; }
     .form-box .form-group dd img{ vertical-align:middle; }
     .form-box .form-group dd .input{ display:inline-block; padding:0 10px; width:50%; height:40px; line-height:20px; border:1px solid #e0e0e0; }

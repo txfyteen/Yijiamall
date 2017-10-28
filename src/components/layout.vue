@@ -22,7 +22,7 @@
     </div>
     <div class="head-nav">
       <div class="section">
-        <!-- <div class="logo">
+          <!-- <div class="logo">
                            <a href="/index.html"><img width="230px" height="70px" src="/templates/main/images/logo.png" /></a>
                        </div>-->
         <div id="menu2" class="nav-box menuhd">

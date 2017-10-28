@@ -26,12 +26,41 @@ var router = new vueRouter({
                 { name: "goodslist", path: "goodslist", component: goodslist },
                 { name: "goodsinfo", path: "goodsinfo/:goodsid", component: goodsinfo },
                 { name: "cart", path: "cart", component: cart },
-                {name:'shopping',path:"shopping",component:shopping},
+                {name:'shopping',path:"shopping/:ids",component:shopping,meta:{islogin:true}},
                 {name:'login',path:"login",component:login},
             ]
         }
     ]
 });
+
+
+
+// //路由全局守护
+router.beforeEach((to,from,next)=>{
+    if(to.name!="login"){
+        localStorage.setItem("currentPage",to.name);
+    }
+    
+
+    //判断如果路由中有islogin，则需要进行登录判断
+    if(to.meta.islogin){
+        axios.get("/site/account/islogin")
+        .then(res=>{
+            // console.log(res.data)
+            if(res.data.code == 'logined'){
+                next();
+            }else if(res.data.code == 'nologin'){
+                // console.log(111)
+                router.push({name:'login'})
+                // next()
+            }
+        })
+    }else{
+        next();
+    }
+
+    
+})
 
 
 
@@ -43,6 +72,8 @@ import axios from "axios";
 axios.defaults.baseURL = "http://157.122.54.189:9095";
 // Vue.use(axios);
 Vue.prototype.$http = axios;
+
+axios.defaults.withCredentials = true;
 
 
 
@@ -101,7 +132,7 @@ var getters = {
         // state.buycount = state.tmpcount;
         state.buycount = getItemCount();
 
-        console.log('===========>',state.buycount);
+        // console.log('===========>',state.buycount);
         return state.buycount;
         
     }

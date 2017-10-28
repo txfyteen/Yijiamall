@@ -99,9 +99,9 @@
                     <div class="cart-foot clearfix">
                         <div class="right-box">
                             <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
-                            <router-link to="/site/shopping">
-                                <button class="button">立即结算</button>
-                            </router-link>
+                            <!-- <router-link to="/site/shopping"> -->
+                                <button class="button" @click="goShopping">立即结算</button>
+                            <!-- </router-link> -->
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -155,6 +155,25 @@
             }   
         },
         methods: {
+            goShopping(){
+                var idStr = [];
+                var obj = {};
+                // console.log(this.goodsList)
+                this.values.forEach((item,index)=>{
+                    if(item){
+                        // console.log(index)
+                        idStr.push(this.goodsList[index].id);
+                        obj[this.goodsList[index].id] = this.goodsList[index].buycount
+                    }
+                })
+
+                localStorage.setItem("selectedGoods",JSON.stringify(obj));
+
+
+                var ids = idStr.join(",");
+                
+                this.$router.push("/site/shopping/"+ids)
+            },
             removeGoods(id){
                 var index = -1
                 index = this.goodsList.findIndex(item=>{item.id == id})
