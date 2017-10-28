@@ -165,14 +165,19 @@
                         idStr.push(this.goodsList[index].id);
                         obj[this.goodsList[index].id] = this.goodsList[index].buycount
                     }
+                    
                 })
-
+                var isNull=this.values.some(item=>{
+                    return (item == true)
+                })
+                if(isNull !== true){
+                    this.$message.error("请选择商品！");
+                    return;
+                }
                 localStorage.setItem("selectedGoods",JSON.stringify(obj));
-
-
                 var ids = idStr.join(",");
                 
-                this.$router.push("/site/shopping/"+ids)
+                this.$router.push({name:"shopping",params:{ids:ids}})
             },
             removeGoods(id){
                 var index = -1
